@@ -1,0 +1,50 @@
+replicaCount: 2
+global:
+  mode: cluster
+image:
+  repository: nacos/nacos-server
+  tag: latest
+  pullPolicy: IfNotPresent
+
+health:
+  enabled: false
+
+env:
+  domainName: cluster.local
+  preferhostmode: hostname
+  serverPort: 8848
+
+persistence:
+  enabled: true
+  datadirstorageClassName: "nacos-data"
+  plugindirstorageClassName: "nacos-plugin"
+  logdirstorageClassName: "nacos-log"
+  fileSystemId: "fs-0e34adb331b61dadb"
+
+service:
+  type: ClusterIP
+  #type: NodePort
+  port: 8848
+  #nodePort: 30000
+
+ingress:
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/subnets: subnet-xxx,subnet-xxx
+
+resources:
+  limits:
+    cpu: 600m
+    memory: 1500Mi
+  requests:
+    cpu: 500m
+    memory: 1024Mi
+annotations: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

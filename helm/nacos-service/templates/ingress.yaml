@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nacos-alb
+  namespace: {{ .Values.namespace }}
+  labels:
+    k8s-app: nacos-alb
+  annotations:
+  {{- toYaml .Values.ingress.annotations | nindent 4}}
+spec:
+  rules:
+    - http:
+        paths:
+        - pathType: Prefix
+          path: /
+          backend:
+            service:
+              name: nacos-cs
+              port:
+                number: 8848

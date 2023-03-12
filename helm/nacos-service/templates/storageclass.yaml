@@ -1,0 +1,38 @@
+{{- if and .Values.persistence.enabled .Values.persistence.datadirstorageClassName }}
+---
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: {{ .Values.persistence.datadirstorageClassName }}
+provisioner: efs.csi.aws.com
+parameters:
+  provisioningMode: efs-ap
+  fileSystemId: {{ .Values.persistence.fileSystemId }}
+  directoryPerms: "755"
+{{- end }}
+
+{{- if and .Values.persistence.enabled .Values.persistence.plugindirstorageClassName }}
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: {{ .Values.persistence.plugindirstorageClassName }}
+provisioner: efs.csi.aws.com
+parameters:
+  provisioningMode: efs-ap
+  fileSystemId: {{ .Values.persistence.fileSystemId }}
+  directoryPerms: "755"
+{{- end }}
+
+{{- if and .Values.persistence.enabled .Values.persistence.logdirstorageClassName }}
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: {{ .Values.persistence.logdirstorageClassName }}
+provisioner: efs.csi.aws.com
+parameters:
+  provisioningMode: efs-ap
+  fileSystemId: {{ .Values.persistence.fileSystemId }}
+  directoryPerms: "755"
+{{- end }}
